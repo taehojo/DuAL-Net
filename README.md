@@ -17,7 +17,7 @@ A web-based implementation is accessible at:
 ## Local Execution
 
 ### Project Structure
-
+```
 DuAL-Net/
 ├── scripts/
 │   ├── annotate_snps.py
@@ -33,14 +33,14 @@ DuAL-Net/
 ├── run_pipeline.sh
 ├── requirements.txt
 └── README.md
-
+```
 
 ### Setup
 
 1.  **Get the Code:**
     Clone the repository using Git:
     ```bash
-    git clone [https://github.com/taehojo/DuAL-Net.git](https://github.com/taehojo/DuAL-Net.git)
+    git clone https://github.com/taehojo/DuAL-Net.git
     cd DuAL-Net
     ```
 
@@ -49,7 +49,6 @@ DuAL-Net/
     ```bash
     python -m venv venv
     source venv/bin/activate  # On Linux/macOS
-    # venv\Scripts\activate  # On Windows
     ```
 
 3.  **Install Dependencies:**
@@ -57,7 +56,6 @@ DuAL-Net/
     ```bash
     pip install -r requirements.txt
     ```
-    *Note: PyTorch (`torch`) installation may require specific commands depending on your system. Refer to the [PyTorch website](https://pytorch.org/).*
 
 4.  **Install Ensembl Data:**
     Download Ensembl data required for SNP annotation by `pyensembl`:
