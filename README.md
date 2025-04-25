@@ -12,7 +12,7 @@ The framework employs an ensemble model combining TabNet and Random Forest class
 ## Web Server
 
 A web-based implementation is accessible at:
-**[https://www.jolab.app/dual-net](https://www.jolab.app/dual-net)**
+**[https://www.jolab.ai/dualnet](https://www.jolab.ai/dualnet)**
 
 ## Local Execution
 
@@ -44,20 +44,13 @@ DuAL-Net/
     cd DuAL-Net
     ```
 
-2.  **Python Environment Setup:**
-    Creating a virtual environment is recommended:
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # On Linux/macOS
-    ```
-
-3.  **Install Dependencies:**
+2.  **Install Dependencies:**
     Install required Python packages:
     ```bash
     pip install -r requirements.txt
     ```
 
-4.  **Install Ensembl Data:**
+3.  **Install Ensembl Data:**
     Download Ensembl data required for SNP annotation by `pyensembl`:
     ```bash
     pyensembl install --release 108 --species homo_sapiens
