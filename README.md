@@ -22,6 +22,10 @@ DuAL-Net/
 ├── scripts/
 │   ├── DuAL-Net.py      # Nested CV & SNP ranking
 │   └── validating.py    # External validation
+├── results/
+│   ├── ADNI_nested_cv_results.json
+│   ├── ADSP_ADC_validation_results.json
+│   └── consensus_snp_rankings.csv
 ├── requirements.txt
 └── README.md
 ```
@@ -102,6 +106,16 @@ python scripts/validating.py \
 | Genotype | PLINK `.raw` | Additive coding (0/1/2) |
 | Phenotype | Tab-delimited | Must contain `New_Label` column (0=control, 1=case) |
 | Annotation | CSV | Must contain `rs_id` column and numeric annotation columns |
+
+## Pre-computed Results
+
+The `results/` folder contains pre-computed results from the manuscript:
+
+| File | Description |
+|------|-------------|
+| `ADNI_nested_cv_results.json` | ADNI discovery cohort (n=1,050): AUC=0.698, α=0.66 |
+| `ADSP_ADC_validation_results.json` | ADSP ADC validation cohort (n=5,570): Top vs Bottom SNP comparison |
+| `consensus_snp_rankings.csv` | SNP rankings aggregated across 5 folds |
 
 ## Citation
 
