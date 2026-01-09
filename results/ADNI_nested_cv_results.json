@@ -1,0 +1,92 @@
+{
+  "n_outer_splits": 5,
+  "n_inner_splits": 5,
+  "window_size": 100,
+  "top_n": 100,
+  "alpha_step": 0.1,
+  "fold_results": [
+    {
+      "outer_fold": 1,
+      "n_train": 840,
+      "n_test": 210,
+      "best_alpha": 1.0,
+      "inner_cv_accuracy": 0.6666666666666666,
+      "outer_test_accuracy": 0.719047619047619,
+      "outer_test_auc": 0.747841025164825,
+      "n_top_snps": 100
+    },
+    {
+      "outer_fold": 2,
+      "n_train": 840,
+      "n_test": 210,
+      "best_alpha": 1.0,
+      "inner_cv_accuracy": 0.6892857142857144,
+      "outer_test_accuracy": 0.6285714285714286,
+      "outer_test_auc": 0.664732101402173,
+      "n_top_snps": 100
+    },
+    {
+      "outer_fold": 3,
+      "n_train": 840,
+      "n_test": 210,
+      "best_alpha": 0.2,
+      "inner_cv_accuracy": 0.6511904761904762,
+      "outer_test_accuracy": 0.6571428571428571,
+      "outer_test_auc": 0.7059151267527162,
+      "n_top_snps": 100
+    },
+    {
+      "outer_fold": 4,
+      "n_train": 840,
+      "n_test": 210,
+      "best_alpha": 0.1,
+      "inner_cv_accuracy": 0.6511904761904762,
+      "outer_test_accuracy": 0.6523809523809524,
+      "outer_test_auc": 0.6895957526080477,
+      "n_top_snps": 100
+    },
+    {
+      "outer_fold": 5,
+      "n_train": 840,
+      "n_test": 210,
+      "best_alpha": 1.0,
+      "inner_cv_accuracy": 0.6857142857142857,
+      "outer_test_accuracy": 0.6428571428571429,
+      "outer_test_auc": 0.6810730253353205,
+      "n_top_snps": 100
+    }
+  ],
+  "summary": {
+    "test_auc_mean": 0.6978314062526164,
+    "test_auc_std": 0.0316644194024347,
+    "test_auc_ci_lower": 0.6585148366565884,
+    "test_auc_ci_upper": 0.7371479758486444,
+    "test_acc_mean": 0.6599999999999999,
+    "test_acc_std": 0.03476516618751234,
+    "test_acc_ci_lower": 0.6168333447533949,
+    "test_acc_ci_upper": 0.7031666552466049,
+    "mean_best_alpha": 0.66,
+    "std_best_alpha": 0.41761226035642196,
+    "all_test_aucs": [
+      0.747841025164825,
+      0.664732101402173,
+      0.7059151267527162,
+      0.6895957526080477,
+      0.6810730253353205
+    ],
+    "all_test_accs": [
+      0.719047619047619,
+      0.6285714285714286,
+      0.6571428571428571,
+      0.6523809523809524,
+      0.6428571428571429
+    ],
+    "all_best_alphas": [
+      1.0,
+      1.0,
+      0.2,
+      0.1,
+      1.0
+    ]
+  }
+}
