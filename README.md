@@ -1,4 +1,4 @@
-# DuAL-Net: Alzheimer's Prediction Framework
+# DuAL-Net: Dual Approach Local-global Network for Alzheimer's Risk Assessment
 
 ## Overview
 
