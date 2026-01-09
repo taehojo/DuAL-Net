@@ -20,6 +20,8 @@ A web-based implementation is accessible at:
 ```
 DuAL-Net/
 ├── scripts/
+│   ├── DuAL-Net.py           # Main modeling script
+│   ├── validating.py         # External validation script
 │   ├── annotate_snps.py
 │   └── run_dual_net_analysis.py
 ├── src/
@@ -70,6 +72,61 @@ DuAL-Net/
     ```
     * The script executes two main stages: SNP annotation followed by the DuAL-Net analysis (local/global processing, scoring, ranking).
     * Results are saved to the specified `RESULT_DIR`.
+
+### Standalone Scripts
+
+For reproducibility, two standalone scripts are provided:
+
+#### Step 1: DuAL-Net.py (Nested CV & SNP Ranking)
+
+Runs nested cross-validation on discovery cohort and generates SNP rankings.
+
+```bash
+python scripts/DuAL-Net.py \
+  --raw <genotype.raw> \
+  --dx <phenotype.txt> \
+  --anno <annotation.csv> \
+  --output ./results
+```
+
+**Arguments:**
+| Argument | Description | Default |
+|----------|-------------|---------|
+| `--raw` | PLINK .raw genotype file | Required |
+| `--dx` | Phenotype file with `New_Label` column | Required |
+| `--anno` | SNP annotation CSV with `rs_id` column | Required |
+| `--output` | Output directory | `./output_modeling` |
+| `--n_outer` | Outer CV folds | 5 |
+| `--n_inner` | Inner CV folds | 5 |
+| `--window_size` | SNP window size | 100 |
+| `--top_n` | Number of top SNPs to select | 100 |
+
+**Output:** `consensus_snp_rankings.csv`
+
+#### Step 2: validating.py (External Validation)
+
+Validates SNP rankings on an independent cohort.
+
+```bash
+python scripts/validating.py \
+  --rankings ./results/consensus_snp_rankings.csv \
+  --raw <validation_genotype.raw> \
+  --anno <annotation.csv> \
+  --output ./validation
+```
+
+**Arguments:**
+| Argument | Description | Default |
+|----------|-------------|---------|
+| `--rankings` | SNP rankings CSV from Step 1 | Required |
+| `--raw` | Validation cohort .raw file | Required |
+| `--anno` | Annotation file (for rsID mapping) | Optional |
+| `--output` | Output directory | `./output_validation` |
+| `--top_n` | Comma-separated list of N values | `100,500,1000` |
+
+**Output:** `validation_results.json`
+
+---
 
 ### Input Data Format
 
