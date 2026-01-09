@@ -7,7 +7,7 @@ DuAL-Net is a framework designed for Alzheimer's Disease (AD) risk prediction us
 1.  **Local Analysis:** Examines genomic context using non-overlapping windows of Single Nucleotide Polymorphisms (SNPs).
 2.  **Global Analysis:** Utilizes functional SNP annotations to capture broader genomic relationships.
 
-The framework employs an ensemble model combining TabNet and Random Forest classifiers. It generates AD risk predictions and ranks SNPs based on their contribution to the prediction.
+The framework employs an ensemble model combining TabNet and Random Forest classifiers with a Logistic Regression meta-learner. It generates AD risk predictions and ranks SNPs based on their contribution to the prediction.
 
 ## Web Server
 
@@ -20,66 +20,30 @@ A web-based implementation is accessible at:
 ```
 DuAL-Net/
 ├── scripts/
-│   ├── DuAL-Net.py           # Main modeling script
-│   ├── validating.py         # External validation script
-│   ├── annotate_snps.py
-│   └── run_dual_net_analysis.py
-├── src/
-│   ├── utils.py
-│   ├── annotation_transformer.py
-│   ├── modeling.py
-│   ├── analysis.py
-│   └── plotting.py
-├── data/
-├── results/
-├── run_pipeline.sh
+│   ├── DuAL-Net.py      # Nested CV & SNP ranking
+│   └── validating.py    # External validation
 ├── requirements.txt
 └── README.md
 ```
 
 ### Setup
 
-1.  **Get the Code:**
-    Clone the repository using Git:
+1.  **Clone the repository:**
     ```bash
     git clone https://github.com/taehojo/DuAL-Net.git
     cd DuAL-Net
     ```
 
-2.  **Install Dependencies:**
-    Install required Python packages:
+2.  **Install dependencies:**
     ```bash
     pip install -r requirements.txt
     ```
 
-3.  **Install Ensembl Data:**
-    Download Ensembl data required for SNP annotation by `pyensembl`:
-    ```bash
-    pyensembl install --release 108 --species homo_sapiens
-    ```
-
-### Running the Pipeline
-
-1.  **Configure Script:**
-    * Open `run_pipeline.sh` in a text editor.
-    * Update the file paths (`INPUT_BIM`, `RAW_DATA`, `DX_DATA`, `ANNOTATION_CSV`) and output settings (`PREFIX`, `RESULT_DIR`) to match your environment.
-    * Adjust analysis parameters (e.g., `WINDOW_SIZE`) if necessary.
-
-2.  **Execute Pipeline:**
-    Run the script from the terminal:
-    ```bash
-    bash run_pipeline.sh
-    ```
-    * The script executes two main stages: SNP annotation followed by the DuAL-Net analysis (local/global processing, scoring, ranking).
-    * Results are saved to the specified `RESULT_DIR`.
-
-### Standalone Scripts
-
-For reproducibility, two standalone scripts are provided:
+### Usage
 
 #### Step 1: DuAL-Net.py (Nested CV & SNP Ranking)
 
-Runs nested cross-validation on discovery cohort and generates SNP rankings.
+Runs 5×5 nested cross-validation on discovery cohort and generates SNP rankings.
 
 ```bash
 python scripts/DuAL-Net.py \
@@ -100,12 +64,16 @@ python scripts/DuAL-Net.py \
 | `--n_inner` | Inner CV folds | 5 |
 | `--window_size` | SNP window size | 100 |
 | `--top_n` | Number of top SNPs to select | 100 |
+| `--alpha_step` | Alpha search step size | 0.1 |
 
-**Output:** `consensus_snp_rankings.csv`
+**Output:**
+- `consensus_snp_rankings.csv` - SNP rankings aggregated across folds
+- `modeling_results.json` - AUC, accuracy, and optimal alpha
+- `fold_*/merged_scores.csv` - Per-fold SNP scores
 
 #### Step 2: validating.py (External Validation)
 
-Validates SNP rankings on an independent cohort.
+Validates SNP rankings on an independent cohort by comparing top-ranked vs bottom-ranked SNPs.
 
 ```bash
 python scripts/validating.py \
@@ -120,31 +88,20 @@ python scripts/validating.py \
 |----------|-------------|---------|
 | `--rankings` | SNP rankings CSV from Step 1 | Required |
 | `--raw` | Validation cohort .raw file | Required |
-| `--anno` | Annotation file (for rsID mapping) | Optional |
+| `--anno` | Annotation file (for rsID to position mapping) | Optional |
 | `--output` | Output directory | `./output_validation` |
 | `--top_n` | Comma-separated list of N values | `100,500,1000` |
 
-**Output:** `validation_results.json`
-
----
+**Output:**
+- `validation_results.json` - AUC for top/bottom SNP subsets
 
 ### Input Data Format
 
-Required input files:
-
-* **SNP List (`.bim`):** Standard PLINK `.bim` format (for annotation).
-* **Raw Genetic Data (`.raw`):** Standard PLINK `.raw` format (for analysis).
-* **Phenotype/Diagnosis Data (`.txt`):** Text file matching samples in `.raw` file, containing a phenotype column (0/1 for control/case).
-
-### Output Files
-
-Key output files generated in the results directory:
-
-* `{PREFIX}_combined_results.csv`: Final SNP ranking with scores.
-* `{PREFIX}_roc_curves.pdf`: ROC curve plots for performance evaluation.
-* `{PREFIX}_analysis_logs.txt`: Log file of the analysis run.
-* Intermediate result files (e.g., `_local_results.csv`, `_global_results.csv`).
-* The annotation CSV file (e.g., `data/snp_annotations.csv`).
+| File | Format | Description |
+|------|--------|-------------|
+| Genotype | PLINK `.raw` | Additive coding (0/1/2) |
+| Phenotype | Tab-delimited | Must contain `New_Label` column (0=control, 1=case) |
+| Annotation | CSV | Must contain `rs_id` column and numeric annotation columns |
 
 ## Citation
 
